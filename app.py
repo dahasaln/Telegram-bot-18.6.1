@@ -39,14 +39,14 @@ def get_price(message: telebot.types.Message):
         if len(values) != 3:
             raise ExchangeException('Введите команду или 3 параметра. Например : рубль евро 1')
 
-        currency, money, num = values
-        total_money = Exchange.get_price(currency, money, num)
+        quote, base, amount = values
+        total_base = Exchange.get_price(quote, base, amount)
     except ExchangeException as e:
         bot.reply_to(message, f'Ошибка пользователя.\n{e}')
     except Exception as e:
         bot.reply_to(message, f'Что-то пошло не так с {e}')
     else:
-        text = f'Переводим {currency} в {money}\n{num} {currency} = {total_money} {money}'
+        text = f'Переводим {quote} в {base}\n{amount} {quote} = {total_base} {base}'
         bot.send_message(message.chat.id, text)
 
 

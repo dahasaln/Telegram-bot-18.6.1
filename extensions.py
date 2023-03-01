@@ -7,37 +7,37 @@ class ExchangeException(Exception):
 
 class Exchange:
     @staticmethod
-    def get_price(currency: str, money: str, num: str):
-        if currency == money:
+    def get_price(quote: str, base: str, amount: str):
+        if quote == base:
             raise ExchangeException(
-                f'Нельзя перевести одинаковые валюты {money}.')
+                f'Нельзя перевести одинаковые валюты {base}.')
 
         try:
-            currency_ticker = keys[currency]
+            quote_ticker = keys[quote]
         except KeyError:
-            raise ExchangeException(f'Не смог обработать валюту {currency} . Введите команду /values или 3 параметра.'
+            raise ExchangeException(f'Не смог обработать валюту {quote} . Введите команду /values или 3 параметра.'
                                     f'\n Например: рубль евро 1 ')
 
         try:
-            money_ticker = keys[money]
+            base_ticker = keys[base]
         except KeyError:
-            raise ExchangeException(f'Не смог обработать валюту {money} . Введите команду /values или 3 параметра.'
+            raise ExchangeException(f'Не смог обработать валюту {base} . Введите команду /values или 3 параметра.'
                                     f'\n Например: рубль евро 1 ')
 
 
         try:
-            if int (num) > 0:
-                num = int(num)
+            if int (amount) > 0:
+                amount = int(amount)
             else:
-                raise ExchangeException (f'Количество не может быть отрицательным: {num}. '
+                raise ExchangeException (f'Количество не может быть отрицательным: {amount}. '
                                     f'\nВведите 3 параметра.'
                                     f'\n Например: рубль евро 1 ')
         except ValueError:
-            raise ExchangeException(f'Не смог обработать валюту {num} . Введите команду /values или 3 параметра.'
+            raise ExchangeException(f'Не смог обработать валюту {amount} . Введите команду /values или 3 параметра.'
                                     f'\n Например: рубль евро 1 ')
 
 
         r = requests.get(
-            f'https://min-api.cryptocompare.com/data/price?fsym={money_ticker}&tsyms={currency_ticker}')
-        total_money = float(json.loads(r.content)[keys[currency]])
-        return total_money
+            f'https://min-api.cryptocompare.com/data/price?fsym={base_ticker}&tsyms={quote_ticker}')
+        total_base = float(json.loads(r.content)[keys[quote]])
+        return total_base
