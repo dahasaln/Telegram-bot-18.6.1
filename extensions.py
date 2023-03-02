@@ -38,6 +38,6 @@ class Exchange:
 
 
         r = requests.get(
-            f'https://min-api.cryptocompare.com/data/price?fsym={base_ticker}&tsyms={quote_ticker}')
-        total_base = float(json.loads(r.content)[keys[quote]])
+            f'https://min-api.cryptocompare.com/data/price?fsym={quote_ticker}&tsyms={base_ticker}')
+        total_base = json.loads(r.content)[keys[base]]
         return round(float (total_base * amount), 2)
